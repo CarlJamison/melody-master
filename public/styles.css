@@ -1,0 +1,117 @@
+.guess{
+    border: 1px solid gray;
+    padding: 8px;
+    height: 38px;
+    font-size: 14px;
+    display: flex;
+    flex-shrink: 0;
+    line-height: 24px;
+    -webkit-box-align: center;
+    align-items: center;
+    margin: 16px;
+}
+
+.guesses{
+    background-color: #121212;
+    max-width: 90%;
+    align-items: center;
+    margin: auto;
+}
+
+.time-bar{
+    height: 14px;
+    display: flex;
+    width: 100%;
+    border-top: 1px solid white;
+    border-bottom: 1px solid white;
+    -webkit-box-pack: center;
+    justify-content: center;
+    padding: 0px 12px;
+}
+
+.current-bar{
+    height: 100%;
+    width: 100%;
+    transform-origin: left top;
+    background-color: #444444;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+}
+
+.progress{
+    height: 100%;
+    width: 100%;
+    background-color: green;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    z-index: 1;
+    transform-origin: left top;
+}
+
+button{
+    color: #121212;
+}
+
+.future-guess{
+    width: 1px;
+    height: 100%;
+    background-color: white;
+    position: absolute;
+    z-index: 1;
+}
+
+.past-guess{
+    width: 1px;
+    height: 100%;
+    background-color: black;
+    position: absolute;
+    z-index: 1;
+}
+
+.time-bar-container{
+    display: flex;
+    -webkit-box-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    align-items: center;
+    width: 100%;
+    flex-direction: column;
+}
+
+.inner-bar{
+    position: relative;
+    width: 100%;
+    height: 100%;
+    max-width: 616px;
+    overflow: hidden;
+}
+
+.search-input{
+    font-size: 16px; 
+    padding: 8px; 
+    margin: auto; 
+    background-color: #121212; 
+    border: solid 1px gray;
+    letter-spacing: 1.2px;
+}
+
+.cool-button{
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    font-weight: bold;
+    border-radius: 10px;
+    padding: 8px;
+}
+
+.search-items{
+    display: flex;
+    flex-direction: column;
+}
+
+.search-items div{
+    text-align: center;
+    cursor: pointer;
+    margin: 4px;
+}
