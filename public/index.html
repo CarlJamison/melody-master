@@ -2,24 +2,18 @@
 <html >
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Heardle?</title>
-        
-        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+        <title>Melody Master</title>
+
         <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
-        <link rel="stylesheet" href="http://localhost/styles.css"/>
+        <link rel="stylesheet" href="/styles.css"/>
         
         <script src="https://cdn.jsdelivr.net/npm/js-confetti@latest/dist/js-confetti.browser.js"></script>
     </head>
-    <body style="background-color: #121212; color: whitesmoke">
-        <div id="guesses" class="guesses">
-            <div class="guess"></div>
-            <div class="guess"></div>
-            <div class="guess"></div>
-            <div class="guess"></div>
-            <div class="guess"></div>
-            <div class="guess"></div>
-        </div>
+    <body style="background-color: #121212; color: gray">
+        <div class="title">
+            <span style="color: green; font-weight: 700; font-family: system-ui;">Melody</span
+                ><span style="color: gray">Master</span></div>
+        <div id="guesses" class="guesses"></div>
 
         <div class="time-bar-container">
             <div class="time-bar">
@@ -47,8 +41,8 @@
         </div>
         <div id="search-items" class="search-items"></div>
         <div style="display: flex; margin: 16px;">
-            <button class="cool-button" onclick="submit()">Submit</button>
-            <button class="cool-button" style="margin: auto" onclick="getNew()">Get New</button>
+            <button class="cool-button" onclick="submit()" style="background-color: green">Submit</button>
+            <!--<button class="cool-button" onclick="getNew()">Get New</button>-->
             <button class="cool-button" onclick="skip()">Skip</button>
         </div>
     </body>
@@ -63,7 +57,7 @@
 
         const urlParams = new URLSearchParams(window.location.search);
         
-        var query = urlParams.get("query") ?? "artist:AJR";
+        var query = urlParams.get("query") ?? "artist:Electric Light Orchestra";
 
         refreshGuesses();
         chooseTrack();
@@ -75,12 +69,16 @@
 
             tracks.sort((a, b) => b.popularity - a.popularity);
 
+            if(query.toLowerCase().includes('artist')){
+                tracks = tracks.filter(t => 
+                    !t.name.toLowerCase().includes("live") &&
+                    !t.name.toLowerCase().includes("version") && 
+                    !t.name.toLowerCase().includes("mix") && 
+                    !t.name.toLowerCase().includes("edit") && 
+                    !t.name.toLowerCase().includes("commentary"));
+            }
+
             tracks = tracks.filter((t, i, a) => 
-                !t.name.toLowerCase().includes("live") &&
-                !t.name.toLowerCase().includes("version") && 
-                !t.name.toLowerCase().includes("mix") && 
-                !t.name.toLowerCase().includes("edit") && 
-                !t.name.toLowerCase().includes("commentary") && 
                 a.findIndex(ft => ft.name.toLowerCase() == t.name.toLowerCase()) == i);
 
             console.log(tracks);
@@ -119,7 +117,7 @@
             var items = names.filter(n => n.toLowerCase().includes(query)).slice(0, 5);
 
             document.getElementById("search-items").innerHTML = items.reduce((s, p) =>
-                        s + `<div onclick='setSong(\"${p}\")'>${p}</div>`, "");
+                s + `<div onclick='setSong(\"${p}\")'>${p}</div>`, "");
         });
 
         function submit(){
@@ -133,12 +131,15 @@
                 }else{
 
                     guesses[guesses.length] = guess;
-                    document.getElementById("search-input").value = "";
                     refreshGuesses();
                     if(!times[guesses.length]){
+                        //Game over
                         getNew();
                     }
                 }
+                
+                document.getElementById("search-input").value = "";
+                document.getElementById("search-items").innerHTML = "";
             }
 
         }
