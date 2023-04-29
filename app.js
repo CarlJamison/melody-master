@@ -36,7 +36,7 @@ app.get('/tracks/:query', (req, res) => {
       promises.push(spotifyApi.searchTracks(req.params.query, { limit: 50, offset: i * 50}).then(
         data => {
           var tracks = data.body.tracks.items
-            .filter(t => t.preview_url && !t.explicit &&
+            .filter(t => t.preview_url && !t.explicit && t.popularity > 20 &&
               (!query.includes("artist") || t.artists.some(a => a.name.toLowerCase() == query.split(":")[1])))
             .map(t => ({ id: t.id, name: t.name, preview: t.preview_url, popularity: t.popularity}))
           allTracks.push(...tracks)

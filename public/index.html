@@ -60,12 +60,17 @@
         var times = [1, 2, 4, 7, 11, 16];
         var guesses = [];
         var startTime;
+
+        const urlParams = new URLSearchParams(window.location.search);
         
+        var query = urlParams.get("query") ?? "artist:AJR";
+
         refreshGuesses();
+        chooseTrack();
 
         async function chooseTrack(){
             
-            tracks = await fetch("tracks/artist:AJR")
+            tracks = await fetch("tracks/" + query)
                     .then((response) => response.json());
 
             tracks.sort((a, b) => b.popularity - a.popularity);
@@ -107,8 +112,6 @@
             }
         }
 
-        chooseTrack();
-
         const input = document.getElementById("search-input");
         input.addEventListener("keyup", function(event) {
             const query = event.target.value.toLowerCase();
@@ -126,10 +129,16 @@
                 if(guess == track.name){
                     const jsConfetti = new JSConfetti();
                     jsConfetti.addConfetti();
+                    getNew();
+                }else{
+
+                    guesses[guesses.length] = guess;
+                    document.getElementById("search-input").value = "";
+                    refreshGuesses();
+                    if(!times[guesses.length]){
+                        getNew();
+                    }
                 }
-                guesses[guesses.length] = guess;
-                document.getElementById("search-input").value = "";
-                refreshGuesses();
             }
 
         }
@@ -147,6 +156,9 @@
 
         function skip(){
             guesses[guesses.length] = "SKIP";
+            if(!times[guesses.length]){
+                getNew();
+            }
             refreshGuesses();
         }
 
