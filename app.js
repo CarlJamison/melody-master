@@ -13,13 +13,8 @@ var spotifyApi = new SpotifyWebApi({
   clientId: process.env.SPOTIFY_CLIENT_ID,
   clientSecret: process.env.SPOTIFY_CLIENT_SECRET
 });
-  
-spotifyApi.clientCredentialsGrant().then(
-  data => spotifyApi.setAccessToken(data.body['access_token']),
-  err => console.log('Something went wrong!', err)
-);
 
-app.get('/tracks/:query', (req, res) => {
+app.get('/tracks/:query', async (req, res) => {
   var query = req.params.query.toLowerCase();
   
   console.log(query);
@@ -29,6 +24,12 @@ app.get('/tracks/:query', (req, res) => {
     res.send(searches[query]);
   }else{
     console.log("Requesting from spotify");
+      
+    await spotifyApi.clientCredentialsGrant().then(
+      data => spotifyApi.setAccessToken(data.body['access_token']),
+      err => console.log('Something went wrong!', err)
+    );
+
     var allTracks = [];
     var promises = [];
 
